@@ -1,0 +1,79 @@
+---
+# Role: proxmox
+#
+# Usage:
+#
+#   roles:
+#     - proxmox
+#
+# Implements https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Jessie and
+# https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Stretch
+
+# On cluster creation PermitRootLogin yes is added.
+# We have to make sure that this line is removed afterwards.
+# This is just a sanity check, as this should be handled in role base.
+- name: Make sure root login via password is not permitted
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: 'PermitRootLogin yes'
+    state: absent
+  notify: restart ssh
+
+- name: External IP must be resolvable and add pvelocalhost entry in /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ ansible_hostname }}'
+    line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }} pvelocalhost'
+- name: Add Proxmox VE repository key (Debian/jessie)
+  apt_key:
+    id: 9887F95A
+    url: http://download.proxmox.com/debian/key.asc
+    state: present
+  when: ansible_distribution_release == "jessie"
+- name: Add Proxmox VE repository key (Debian/stretch)
+  apt_key:
+    id: E2EF0603
+    # We can not use https to download the key, because when changing to https we end up in enterprise.proxmox.com which needs a valid subscription with username and password. *sigh*
+    url: http://download.proxmox.com/debian/proxmox-ve-release-5.x.gpg
+    keyring: /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg
+    state: present
+  when: ansible_distribution_release == "stretch"
+- name: Remove /etc/apt/sources.list.d/pve-enterprise.list
+  file: dest=/etc/apt/sources.list.d/pve-enterprise.list state=absent
+- name: Adapt your sources.list for proxmox
+  apt_repository:
+    repo: deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription
+    filename: proxmox
+    update_cache: yes
+    state: present
+- name: Make sure pve-enterprise is removed (before installation of proxmox-ve)
+  apt_repository:
+    repo: deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise
+    state: absent
+    update_cache: yes
+- name: Make sure a conflicting firmware-amd-graphics package is purged
+  apt: name={{ item }} state=absent purge=yes
+  with_items:
+    - firmware-amd-graphics
+- name: Install Proxmox VE packages (except ksm-control-daemon open-iscsi)
+  apt: name={{ item }} state=present
+  with_items:
+    - proxmox-ve
+    - omping
+  when: not ansible_check_mode
+- name: Install systemd-sysv (if Debian/jessie)
+  apt: name={{ item }} state=present
+  with_items:
+    - systemd-sysv
+  when: ansible_distribution_release == "jessie"
+- name: Setup etckeeper to ignore /etc/pve
+  lineinfile:
+    path: /etc/.gitignore
+    line: pve
+  when: not ansible_check_mode
+- name: Remove /etc/pve from etckeeper
+  command: etckeeper vcs rm -r --cached /etc/pve/
+  ignore_errors: yes
+- name: etckeeper snapshot
+  command: etckeeper commit 'ignore pve (via ansible)'
+  ignore_errors: yes
