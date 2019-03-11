@@ -18,12 +18,11 @@
     line: 'PermitRootLogin yes'
     state: absent
   notify: restart ssh
-
 - name: External IP must be resolvable and add pvelocalhost entry in /etc/hosts
   lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ ansible_hostname }}'
-    line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }} pvelocalhost'
+    line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
 - name: Add Proxmox VE repository key (Debian/jessie)
   apt_key:
     id: 9887F95A
@@ -66,14 +65,30 @@
   with_items:
     - systemd-sysv
   when: ansible_distribution_release == "jessie"
+- name: Check for etckeeper
+  shell: 'dpkg -l etckeeper | grep -e "^ii" -q'
+  register: etckeeper_installed
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
 - name: Setup etckeeper to ignore /etc/pve
   lineinfile:
     path: /etc/.gitignore
     line: pve
-  when: not ansible_check_mode
+  when: not ansible_check_mode and etckeeper_installed.rc == 0
+- name: Check for /etc/pve in etckeeper
+  shell: 'etckeeper vcs ls-files /etc/pve | grep -e "pve" -q'
+  register: pve_exists_in_etckeeper
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
+  when: etckeeper_installed.rc == 0
 - name: Remove /etc/pve from etckeeper
   command: etckeeper vcs rm -r --cached /etc/pve/
   ignore_errors: yes
+  register: pve_removed_from_etckeeper
+  when: etckeeper_installed.rc == 0 and pve_exists_in_etckeeper.rc == 0
 - name: etckeeper snapshot
   command: etckeeper commit 'ignore pve (via ansible)'
   ignore_errors: yes
+  when: etckeeper_installed.rc == 0 and pve_removed_from_etckeeper.rc == 0
