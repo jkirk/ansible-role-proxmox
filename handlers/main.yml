@@ -3,3 +3,5 @@
   service:
     name: ssh
     state: restarted
+- name: etckeeper snapshot ignore pve
+  command: etckeeper commit 'ignore pve (via ansible)'
