@@ -3,3 +3,8 @@
   remote_user: root
   roles:
     - ansible-role-proxmox
+
+- hosts: localhost
+  remote_user: root
+  roles:
+    - { role: ansible-role-proxmox, proxmox_pveadmins [ 'janedoe', 'johndoe' ] }
