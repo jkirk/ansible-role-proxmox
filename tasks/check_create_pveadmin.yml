@@ -1,0 +1,23 @@
+---
+
+- name: Check for PVE group admin
+  shell: 'pvesh get /access/groups --noborder 1 --noheader 1 | grep -e "^admin" -q'
+  register: pvegroup_admin_exists
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
+- name: Create PVE group admin
+  command: 'pveum groupadd admin -comment "System Administrators"'
+  when:
+    - pvegroup_admin_exists is defined
+    - pvegroup_admin_exists.rc != 0
+- name: Check PVE ACL
+  shell: 'pvesh get /access/acl --noborder 1 --noheader 1 | grep "^/    Administrator group admin 1" -q'
+  register: pveacl_root_administrator_exists
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
+- name: Set role Administrator to admin group
+  command: 'pveum aclmod / -group admin -role Administrator'
+  when:
+    - pveacl_root_administrator_exists.rc != 0
