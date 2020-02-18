@@ -21,4 +21,4 @@
   changed_when: false
 - name: Add PVE user to admin group
   command: 'pveum usermod {{ item }}@pam -group admin'
-  when: not pveuser_is_admin.found and proxmox_pveadmins is defined
+  when: pveuser_is_admin.found is defined and not pveuser_is_admin.found and proxmox_pveadmins is defined

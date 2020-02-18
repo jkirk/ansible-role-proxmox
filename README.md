@@ -39,7 +39,7 @@ None.
 Additional Notes
 ----------------
 
-If you use the role [Oefenweb/ansible-hostname](https://github.com/Oefenweb/ansible-hostname) to set the hostname and `/etc/hosts` you should put the following in `group_vars/proxmox`:
+If you use the role [Oefenweb/ansible-hostname](https://github.com/Oefenweb/ansible-hostname) (which sets the hostname and `/etc/hosts`)  you should put the following in `group_vars/proxmox`:
 
 ```yaml
 ---
