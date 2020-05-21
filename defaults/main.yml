@@ -1,2 +1,6 @@
 ---
 # defaults file for ansible-role-proxmox
+
+# If proxmox_sysctl_ipv4_forward is set to true IP forwarding is enabled
+# and written in /etc/sysctl.d/99-proxmox.conf
+proxmox_sysctl_ipv4_forward: false

@@ -100,6 +100,15 @@
     - pve_exists_in_etckeeper.rc is defined
     - pve_exists_in_etckeeper.rc == 0
   notify: etckeeper snapshot ignore pve
+- name: Enable kernel IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    sysctl_file: '/etc/sysctl.d/99-proxmox.conf'
+    state: present
+    reload: yes
+  when: proxmox_sysctl_ipv4_forward
 
 - include_tasks: check_create_pveadmin.yml
   when: proxmox_pveadmins is defined
