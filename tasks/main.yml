@@ -19,10 +19,10 @@
     line: 'PermitRootLogin yes'
     state: absent
   notify: restart ssh
-- name: External IP must be resolvable and add pvelocalhost entry in /etc/hosts
+- name: External IP must be resolvable in /etc/hosts
   lineinfile:
     dest: /etc/hosts
-    regexp: '.*{{ ansible_hostname }}'
+    regexp: '.*{{ ansible_fqdn }}'
     line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
 - name: Add Proxmox VE repository key (Debian/jessie)
   apt_key:
