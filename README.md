@@ -39,7 +39,7 @@ None.
 Additional Notes
 ----------------
 
-If you use the role [Oefenweb/ansible-hostname](https://github.com/Oefenweb/ansible-hostname) (which sets the hostname and `/etc/hosts`)  you should put the following in `group_vars/proxmox`:
+If you use the role [Oefenweb/ansible-hostname](https://github.com/Oefenweb/ansible-hostname) (which sets the hostname and `/etc/hosts`)  you should put the following in `group_vars/proxmox.yml` (together with a host group `proxmox`):
 
 ```yaml
 ---
@@ -58,6 +58,30 @@ but Proxmox **needs** the external IP-Addresss to be resolvable. That means the 
 
 ```
 192.0.2.1 proxmox.example.com proxmox
+```
+
+Further more, if you have use a Proxmox/Ceph cluster with two rings and a ceph network, a host group `cluster` is needed and something like this should be added in `group_vars/cluster.yml`:
+```
+---
+hostname_additional_hosts:
+  - ip_address: 10.88.0.1
+    hostname: alpha01.ring0
+  - ip_address: 10.88.0.2
+    hostname: alpha02.ring0
+  - ip_address: 10.88.0.3
+    hostname: alpha03.ring0
+  - ip_address: 10.89.0.1
+    hostname: alpha01.ring1
+  - ip_address: 10.89.0.2
+    hostname: alpha02.ring1
+  - ip_address: 10.89.0.3
+    hostname: alpha03.ring1
+  - ip_address: 10.77.0.1
+    hostname: alpha01.ceph
+  - ip_address: 10.77.0.2
+    hostname: alpha02.ceph
+  - ip_address: 10.77.0.3
+    hostname: alpha03.ceph
 ```
 
 Example Playbook
