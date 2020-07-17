@@ -12,7 +12,7 @@
     - pvegroup_admin_exists is defined
     - pvegroup_admin_exists.rc != 0
 - name: Check PVE ACL
-  shell: 'pvesh get /access/acl --noborder 1 --noheader 1 | grep "^/    Administrator group admin 1" -q'
+  shell: 'pvesh get /access/acl --noborder 1 --noheader 1 | grep "^/    Administrator[ ]*group admin[ ]*1" -q'
   register: pveacl_root_administrator_exists
   ignore_errors: true
   changed_when: false
