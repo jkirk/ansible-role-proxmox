@@ -4,3 +4,8 @@
 # If proxmox_sysctl_ipv4_forward is set to true IP forwarding is enabled
 # and written in /etc/sysctl.d/99-proxmox.conf
 proxmox_sysctl_ipv4_forward: false
+
+# If proxmox_nested_virtualization is set to true, nested virtualization is
+# enabled on Intel CPU (via /etc/modprobe.d/kvm-intel.conf).
+# A reboot is needed to enable to enabled nested virtualization.
+proxmox_nested_virtualization: false

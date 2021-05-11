@@ -114,6 +114,13 @@
     reload: true
   when: proxmox_sysctl_ipv4_forward
 
+- name: Enable nested virtualization on Intel CPU
+  lineinfile:
+    path: '/etc/modprobe.d/kvm-intel.conf'
+    line: 'options kvm-intel nested=Y'
+    create: true
+  when: proxmox_nested_virtualization
+
 - include_tasks: check_create_pveadmin.yml
   when: proxmox_pveadmins is defined
 
