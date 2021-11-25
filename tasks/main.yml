@@ -69,7 +69,6 @@
   apt:
     name:
       - proxmox-ve
-      - omping
     state: present
   when: not ansible_check_mode
 - name: Remove /etc/apt/sources.list.d/pve-enterprise.list (if installed by Proxmox)
