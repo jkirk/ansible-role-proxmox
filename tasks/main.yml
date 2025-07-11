@@ -66,6 +66,7 @@
     repo: deb http://download.proxmox.com/debian/{{ proxmox_ceph_version|default("ceph-squid") }} {{ ansible_distribution_release }} {{ proxmox_ceph_repository|default("no-subscription") }}
     filename: ceph
     state: present
+  when: proxmox_ceph_enable|default(false)|bool
 
 - name: Make sure a conflicting firmware-amd-graphics package is purged
   apt:
