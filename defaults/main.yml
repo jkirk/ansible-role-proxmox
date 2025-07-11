@@ -13,3 +13,6 @@ proxmox_nested_virtualization: false
 # To set the Ceph No-Subscription Repository, proxmox_ceph_version needs to be set.
 # proxmox_ceph_version defaults to "ceph-squid".
 # proxmox_ceph_version: "ceph-squid"
+
+# The Ceph No-Subscription Repository is named "no-subscription", but was named "main" in older PVE versions.
+# proxmox_ceph_repository: "no-subscription"

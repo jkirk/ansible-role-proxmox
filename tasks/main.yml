@@ -63,7 +63,7 @@
 
 - name: Enable Ceph No-Subscription Repository
   apt_repository:
-    repo: deb http://download.proxmox.com/debian/{{ proxmox_ceph_version|default("ceph-squid") }} {{ ansible_distribution_release }} no-subscription
+    repo: deb http://download.proxmox.com/debian/{{ proxmox_ceph_version|default("ceph-squid") }} {{ ansible_distribution_release }} {{ proxmox_ceph_repository|default("no-subscription") }}
     filename: ceph
     state: present
 
