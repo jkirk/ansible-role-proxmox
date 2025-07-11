@@ -9,3 +9,7 @@ proxmox_sysctl_ipv4_forward: false
 # enabled on Intel CPU (via /etc/modprobe.d/kvm-intel.conf).
 # A reboot is needed to enable to enabled nested virtualization.
 proxmox_nested_virtualization: false
+
+# To set the Ceph No-Subscription Repository, proxmox_ceph_version needs to be set.
+# proxmox_ceph_version defaults to "ceph-squid".
+# proxmox_ceph_version: "ceph-squid"

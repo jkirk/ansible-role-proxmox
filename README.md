@@ -1,7 +1,7 @@
 proxmox
 =======
 
-Simple ansible role to install Proxmox VE on Debian as described in <https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Stretch> and <https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Buster>
+Simple ansible role to install Proxmox VE on Debian as described in <https://pve.proxmox.com/wiki/Category:Installation>
 
 Requirements
 ------------
@@ -10,7 +10,6 @@ None.
 
 Role Variables
 --------------
-
 
 If the role variable `proxmox_pveadmins` is defined a PVE group 'admin' is
 created and the ACL is updated in that way that members of the group 'admin'
@@ -76,12 +75,6 @@ hostname_additional_hosts:
     hostname: alpha02.ring1
   - ip_address: 10.89.0.3
     hostname: alpha03.ring1
-  - ip_address: 10.77.0.1
-    hostname: alpha01.ceph
-  - ip_address: 10.77.0.2
-    hostname: alpha02.ceph
-  - ip_address: 10.77.0.3
-    hostname: alpha03.ceph
 ```
 
 Example Playbook
