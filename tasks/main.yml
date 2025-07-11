@@ -72,12 +72,15 @@
     name: firmware-amd-graphics
     state: absent
     purge: true
+
 - name: Install Proxmox VE packages (except ksm-control-daemon open-iscsi)
   apt:
     name:
       - proxmox-ve
+      - lldpd
     state: present
   when: not ansible_check_mode
+
 - name: Remove /etc/apt/sources.list.d/pve-enterprise.list (if installed by Proxmox)
   file: dest=/etc/apt/sources.list.d/pve-enterprise.list state=absent
 - name: Install systemd-sysv (if Debian/jessie)
