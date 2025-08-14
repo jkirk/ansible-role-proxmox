@@ -1,0 +1,6 @@
+# HEADER: managed by ansible, do NOT edit manually!
+{% if proxmox_ceph_enterprise_repos %}
+deb https://enterprise.proxmox.com/debian/{{ proxmox_ceph_version|default("ceph-squid") }} {{ ansible_distribution_release }} enterprise
+{% else %}
+deb http://download.proxmox.com/debian/{{ proxmox_ceph_version|default("ceph-squid") }} {{ ansible_distribution_release }} {{ proxmox_ceph_repository|default("no-subscription") }}
+{% endif %}

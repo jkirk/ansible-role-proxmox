@@ -6,3 +6,5 @@
 - name: etckeeper snapshot ignore pve
   command: etckeeper commit 'ignore pve (via ansible)'
   ignore_errors: true
+- name: apt-get update
+  command: apt-get update
