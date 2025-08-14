@@ -20,3 +20,11 @@ proxmox_nested_virtualization: false
 # To set the Ceph Repository, proxmox_ceph_version needs to be set.
 # proxmox_ceph_version defaults to "ceph-squid".
 # proxmox_ceph_version: "ceph-squid"
+
+# If proxmox_pve_enterprise_repos is set to true, the Proxmox VE Enterprise repository will be used.
+# proxmox_pve_enterprise_repos defaults to false
+proxmox_pve_enterprise_repos: false
+
+# If proxmox_ceph_enterprise_repos is set to true, the Proxmox Ceph Enterprise repository will be used.
+# proxmox_ceph_enterprise_repos defaults to false
+proxmox_ceph_enterprise_repos: false
