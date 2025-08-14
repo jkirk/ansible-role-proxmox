@@ -57,6 +57,7 @@
     group: root
     mode: 0644
   notify: apt-get update
+  when: proxmox_ceph_enable|default(false)|bool
 
 - name: Make sure a conflicting firmware-amd-graphics package is purged
   apt:

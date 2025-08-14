@@ -12,7 +12,7 @@ proxmox_nested_virtualization: false
 
 # If proxmox_ceph_enable is set to true, the Ceph Repository will be deployed.
 # proxmox_ceph_enable defaults to false
-# proxmox_ceph_enable: false
+proxmox_ceph_enable: false
 
 # The Ceph No-Subscription Repository is named "no-subscription", but was named "main" in older PVE versions.
 # proxmox_ceph_repository: "no-subscription"
