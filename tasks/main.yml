@@ -24,6 +24,8 @@
     dest: /etc/hosts
     regexp: '.*{{ ansible_fqdn }}'
     line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
+  tags:
+    - molecule-notest
 
 # we switched from /etc/apt/sources.list.d/proxmox.list to product
 # specific files like pve.list + ceph.list

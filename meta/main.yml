@@ -5,7 +5,7 @@ galaxy_info:
   description: Simple ansible role to install Proxmox VE
   company: SynPro Solutions GmbH
   role_name: proxmox
-  namespace: synpro
+  namespace: jkirk
 
   # Choose a valid license ID from https://spdx.org - some suggested licenses:
   license: MIT
@@ -24,8 +24,8 @@ galaxy_info:
   platforms:
     - name: "Debian"
       versions:
-        - "stretch"
-        - "buster"
+        - "bookworm"
+        - "trixie"
 
   galaxy_tags: []
   # List tags for your role here, one per line. A tag is a keyword that describes
