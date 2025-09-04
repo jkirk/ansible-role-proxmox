@@ -36,9 +36,11 @@
   notify: apt-get update
 
 # we manage the repository ourselves
-- name: Remove /etc/apt/sources.list.d/pve-enterprise.list (if installed by Proxmox)
+- name: Make sure /etc/apt/sources.list.d/pve-enterprise.{list|sources} are absent
   file:
-    dest: /etc/apt/sources.list.d/pve-enterprise.list
+    dest:
+      - /etc/apt/sources.list.d/pve-enterprise.list
+      - /etc/apt/sources.list.d/pve-enterprise.sources
     state: absent
   notify: apt-get update
 
