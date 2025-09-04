@@ -61,6 +61,9 @@
   notify: apt-get update
   when: proxmox_ceph_enable|default(false)|bool
 
+- name: Flush handlers (apt-get update after apt sources update)
+  meta: flush_handlers
+
 - name: Make sure a conflicting firmware-amd-graphics package is purged
   apt:
     name: firmware-amd-graphics
