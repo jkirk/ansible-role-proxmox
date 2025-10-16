@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: "print ansible_facts vars"
+      debug: var=ansible_facts
+  roles:
+    - role: jkirk.proxmox

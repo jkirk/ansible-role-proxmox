@@ -1,6 +1,6 @@
 ---
 driver:
-  name: docker
+  name: podman
 platforms:
   - name: instance
     image: geerlingguy/docker-${MOLECULE_DISTRO:-debian12}-ansible:latest
