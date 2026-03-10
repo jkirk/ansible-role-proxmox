@@ -53,6 +53,13 @@
     mode: 0644
   notify: apt-get update
 
+- name: Remove Proxmox Ceph apt repository
+  file:
+    path: /etc/apt/sources.list.d/ceph.list
+    state: absent
+  notify: apt-get update
+  when: not proxmox_ceph_enable|default(false)|bool
+
 - name: Deploy Proxmox Ceph apt repository
   template:
     src: templates/apt/ceph.list.j2
