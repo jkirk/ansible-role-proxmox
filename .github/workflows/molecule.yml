@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [master, main]
 
+  schedule:
+    - cron: "42 3 * * 4"
+
 env:
   ANSIBLE_ROLE: 'jkirk.proxmox'
 
@@ -19,15 +22,21 @@ jobs:
 
     strategy:
       matrix:
-        target-distro:
+        control: [bookworm, trixie, podman]
+        include:
+          - control: bookworm
+            python_version: "3.11.2"
+            ansible_core: "2.14.18"
+          - control: trixie
+            python_version: "3.13.5"
+            ansible_core: "2.19.4"
+          - control: podman
+            python_version: "3.11.2"
+            ansible_core: "2.14.18"
+        target_distro:
+          - debian11
           - debian12
           - debian13
-        ansible-core-version:
-          - '2.16.0'
-          - '2.18.0'
-        python-version:
-          - '3.11'
-          - '3.13'
 
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -36,7 +45,7 @@ jobs:
 
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Check out code base
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ${{ env.ANSIBLE_ROLE }}
 
@@ -45,10 +54,10 @@ jobs:
       - name: Set up Python3
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python_version }}
 
-      - name: Install test dependencies
-        run: pip3 install ansible-core~=${{ matrix.ansible-core-version }} molecule molecule-plugins[docker]
+      - name: Install ansible-core and Ansible Molecule
+        run: pip install ansible-core==${{ matrix.ansible_core }} molecule molecule-plugins[podman]
 
       - name: Check ansible version
         run: ansible --version
@@ -62,4 +71,4 @@ jobs:
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.target-distro }}
+          MOLECULE_DISTRO: ${{ matrix.target_distro }}
