@@ -1,6 +1,10 @@
 # HEADER: managed by ansible, do NOT edit manually!
+{% if ansible_distribution_major_version | int > 10 %}
 {% if proxmox_pve_enterprise_repos %}
 deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise
 {% else %}
 deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription
+{% endif %}
+{% else %}
+# Debian release {{ ansible_distribution_major_version }} is EOL, skipping pve repository setup
 {% endif %}
